@@ -12,7 +12,7 @@ if __name__ == '__main__':
     model.load_weights('model.h5')
     model.fit_generator(data.generator(train_db, augment=True),
                         validation_data=data.load_data(validation_db),
-                        steps_per_epoch=1,
-                        epochs=5000)
+                        steps_per_epoch=50,
+                        epochs=10)
     model.save('model.h5')
 
