@@ -38,17 +38,22 @@ def load_data(df):
     y_data = np.zeros(len(df), np.float32)
     index = 0
     for _, item in df.iterrows():
-        x_data[index, :, :, :], y_data[index] = preprocess(cv2.imread(item['center'])), item['angle']
+        x_data[index, :, :, :], y_data[index] = np.atleast_3d(preprocess(cv2.imread(item['center']))), item['angle']
         index += 1
     return x_data, y_data
 
 
 def augment_data(x, y):
-    # random flip
+
     for idx in range(len(y)):
+        # random horizontal flip
         if np.random.rand() > 0.5:
-            x[idx, :, :, :] = cv2.flip(x[idx, :, :, :], 1)
+            x[idx, :, :, :] = np.atleast_3d(cv2.flip(np.squeeze(x[idx, :, :, :]), 1))
             y[idx] = -y[idx]
+        # random inverse
+        if np.random.rand() > 0.5:
+            x[idx, :, :, :] = 1 - x[idx, :, :, :]
+
     return x, y
 
 

@@ -1,6 +1,8 @@
 linux_sim/
 images/
 .idea/
+__pycache__/
+
 
 
 

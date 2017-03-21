@@ -12,14 +12,18 @@ def preprocess(image):
     ret = cv2.resize(ret, parameters.SAMPLE_SHAPE[1::-1], interpolation=cv2.INTER_LINEAR)
     # equalize luma channel
     ret[:, :, 0] = cv2.equalizeHist(ret[:, :, 0])
-    # convert to BGR
-    ret = cv2.cvtColor(ret, cv2.COLOR_YUV2BGR)
+
+    if parameters.SAMPLE_SHAPE[-1] == 1:
+        ret = ret[:, :, 0]
+    else:
+        # convert to BGR
+        ret = cv2.cvtColor(ret, cv2.COLOR_YUV2BGR)
     # return as float32, with 0-1 range
     return ret.astype(np.float32) / 256
 
 
 if __name__ == '__main__':
-    test_image = 'data/track0_hard_1/IMG/center_2017_03_20_15_52_25_613.jpg'
+    test_image = 'images/track0_hard_1/IMG/center_2017_03_20_15_52_25_613.jpg'
     img = cv2.imread(test_image)
     print(img.shape)
     cv2.namedWindow('sample', cv2.WINDOW_NORMAL)
